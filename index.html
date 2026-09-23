@@ -2,354 +2,521 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>โปรแกรมคำนวณเงินกู้ | Member Portal</title>
+<title>โปรแกรมคำนวณเงินกู้ | Member Portal</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --primary: #0757a0;
+        --primary-light: #0d78d5;
+        --blue-bg: #eef7ff;
+        --text: #183153;
+        --muted: #71869d;
+        --border: #d9e5f1;
+        --white: #ffffff;
+    }
+
+    body {
+        font-family:
+            "Noto Sans Thai",
+            "Segoe UI",
+            Tahoma,
+            sans-serif;
+
+        min-height: 100vh;
+        background:
+            linear-gradient(
+                135deg,
+                #eaf5ff 0%,
+                #f8fbff 50%,
+                #edf7ff 100%
+            );
+
+        color: var(--text);
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    .header {
+        background:
+            linear-gradient(
+                135deg,
+                #064f91,
+                #0d78d5
+            );
+
+        color: white;
+        padding: 28px 30px;
+
+        border-radius: 22px 22px 0 0;
+
+        box-shadow:
+            0 12px 35px rgba(0, 80, 150, 0.18);
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+    }
+
+    .logo {
+        width: 58px;
+        height: 58px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: rgba(255,255,255,0.17);
+        border: 1px solid rgba(255,255,255,0.25);
+
+        border-radius: 16px;
+
+        font-size: 30px;
+    }
+
+    .header h1 {
+        font-size: 25px;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .header p {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    /* =========================
+       MAIN CARD
+    ========================== */
+
+    .main-card {
+        background: var(--white);
+
+        padding: 32px;
+
+        border-radius: 0 0 22px 22px;
+
+        box-shadow:
+            0 15px 40px rgba(30, 80, 130, 0.10);
+    }
+
+    .section-title {
+        font-size: 20px;
+        color: var(--primary);
+        font-weight: 700;
+
+        margin-bottom: 25px;
+    }
+
+    .section-title::before {
+        content: "";
+
+        display: inline-block;
+
+        width: 5px;
+        height: 22px;
+
+        background: var(--primary-light);
+
+        border-radius: 5px;
+
+        margin-right: 10px;
+
+        vertical-align: -4px;
+    }
+
+    /* =========================
+       FORM
+    ========================== */
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: 600;
+
+        color: #35516f;
+
+        margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    input {
+        width: 100%;
+
+        padding:
+            14px
+            45px
+            14px
+            14px;
+
+        border: 1.5px solid var(--border);
+
+        border-radius: 12px;
+
+        background: #fbfdff;
+
+        color: var(--text);
+
+        font-size: 16px;
+
+        outline: none;
+
+        transition: 0.2s;
+    }
+
+    input:focus {
+        border-color: var(--primary-light);
+
+        background: white;
+
+        box-shadow:
+            0 0 0 4px rgba(13,120,213,0.10);
+    }
+
+    .unit {
+        position: absolute;
+
+        right: 13px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: var(--muted);
+
+        font-size: 13px;
+
+        pointer-events: none;
+    }
+
+    .hint {
+        margin-top: 6px;
+
+        color: #8798aa;
+
+        font-size: 11px;
+    }
+
+    /* =========================
+       BUTTON
+    ========================== */
+
+    .calculate-btn {
+        width: 100%;
+
+        border: none;
+
+        border-radius: 13px;
+
+        padding: 15px;
+
+        margin-top: 25px;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary-light)
+            );
+
+        color: white;
+
+        font-size: 17px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 8px 18px rgba(13,120,213,0.22);
+
+        transition: 0.2s;
+    }
+
+    .calculate-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 12px 25px rgba(13,120,213,0.28);
+    }
+
+    .calculate-btn:active {
+        transform: translateY(0);
+    }
+
+    /* =========================
+       ERROR
+    ========================== */
+
+    .error {
+        display: none;
+
+        margin-top: 15px;
+
+        padding: 12px 15px;
+
+        border-radius: 10px;
+
+        background: #fff0f0;
+
+        border: 1px solid #ffcaca;
+
+        color: #a33232;
+
+        font-size: 13px;
+    }
+
+    .error.show {
+        display: block;
+    }
+
+    /* =========================
+       RESULT
+    ========================== */
+
+    .result {
+        display: none;
+
+        margin-top: 30px;
+
+        padding: 26px;
+
+        border-radius: 18px;
+
+        background: #f2f8ff;
+
+        border: 1px solid #d7eaff;
+    }
+
+    .result.show {
+        display: block;
+
+        animation:
+            fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+
+        from {
+            opacity: 0;
+            transform: translateY(8px);
         }
 
-        body {
-            font-family: "Segoe UI", "Noto Sans Thai", Tahoma, sans-serif;
-            background: linear-gradient(135deg, #eef6ff, #f8fbff);
-            color: #183153;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #0757a0, #0d78d5);
-            color: white;
-            border-radius: 22px 22px 0 0;
-            padding: 28px 30px;
-            box-shadow: 0 10px 30px rgba(0, 83, 155, 0.18);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .logo {
-            width: 58px;
-            height: 58px;
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-        }
-
-        .header h1 {
-            font-size: 25px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        /* Main Card */
-        .main-card {
-            background: white;
-            border-radius: 0 0 22px 22px;
-            padding: 32px;
-            box-shadow: 0 15px 40px rgba(30, 80, 130, 0.10);
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #0757a0;
-            margin-bottom: 25px;
-        }
-
-        .section-title::before {
-            content: "";
-            display: inline-block;
-            width: 5px;
-            height: 22px;
-            background: #0d78d5;
-            border-radius: 5px;
-            margin-right: 10px;
-            vertical-align: -4px;
-        }
-
-        /* Form */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #35516f;
-            margin-bottom: 8px;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 45px 14px 14px;
-            border: 1.5px solid #d5e1ee;
-            border-radius: 12px;
-            outline: none;
-            font-size: 16px;
-            color: #183153;
-            background: #fbfdff;
-            transition: 0.2s ease;
-        }
-
-        input:focus {
-            border-color: #0d78d5;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(13,120,213,0.10);
-        }
-
-        .unit {
-            position: absolute;
-            right: 13px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #71869d;
-            font-size: 13px;
-            pointer-events: none;
-        }
-
-        .hint {
-            font-size: 11px;
-            color: #8294a8;
-            margin-top: 6px;
-        }
-
-        /* Button */
-        .calculate-btn {
-            width: 100%;
-            border: none;
-            border-radius: 13px;
-            padding: 15px;
-            margin-top: 25px;
-            background: linear-gradient(135deg, #0757a0, #0d78d5);
-            color: white;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 8px 18px rgba(13,120,213,0.22);
-        }
-
-        .calculate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(13,120,213,0.28);
-        }
-
-        .calculate-btn:active {
+        to {
+            opacity: 1;
             transform: translateY(0);
         }
 
-        /* Result */
-        .result {
-            display: none;
-            margin-top: 30px;
-            border-radius: 18px;
-            background: #f2f8ff;
-            border: 1px solid #d7eaff;
-            padding: 25px;
+    }
+
+    .result-title {
+        text-align: center;
+
+        color: #45617d;
+
+        font-size: 14px;
+
+        margin-bottom: 8px;
+    }
+
+    .monthly-payment {
+        text-align: center;
+
+        color: var(--primary);
+
+        font-size: 40px;
+
+        font-weight: 800;
+
+        margin-bottom: 4px;
+    }
+
+    .monthly-label {
+        text-align: center;
+
+        color: #657d96;
+
+        font-size: 13px;
+
+        margin-bottom: 22px;
+    }
+
+    /* =========================
+       SUMMARY
+    ========================== */
+
+    .summary {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 12px;
+    }
+
+    .summary-item {
+        background: white;
+
+        border-radius: 12px;
+
+        padding: 15px;
+
+        text-align: center;
+
+        border: 1px solid #e0ebf7;
+    }
+
+    .summary-item span {
+        display: block;
+
+        color: var(--muted);
+
+        font-size: 12px;
+
+        margin-bottom: 6px;
+    }
+
+    .summary-item strong {
+        color: var(--text);
+
+        font-size: 16px;
+    }
+
+    /* =========================
+       NOTICE
+    ========================== */
+
+    .notice {
+        margin-top: 20px;
+
+        padding: 14px 15px;
+
+        background: #fff9e9;
+
+        border: 1px solid #f3df9c;
+
+        border-radius: 12px;
+
+        color: #735b18;
+
+        font-size: 12px;
+
+        line-height: 1.8;
+    }
+
+    .notice strong {
+        color: #654e0b;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    .footer {
+        text-align: center;
+
+        color: #8294a8;
+
+        font-size: 11px;
+
+        padding: 20px 10px 5px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 700px) {
+
+        body {
+            padding: 10px;
         }
 
-        .result.show {
-            display: block;
-            animation: fadeIn 0.35s ease;
+        .header {
+            padding: 22px 18px;
+
+            border-radius:
+                18px 18px 0 0;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .logo {
+            width: 48px;
+            height: 48px;
+
+            font-size: 24px;
         }
 
-        .result-title {
-            text-align: center;
-            color: #45617d;
-            font-size: 14px;
-            margin-bottom: 8px;
+        .header h1 {
+            font-size: 20px;
         }
 
-        .monthly-payment {
-            text-align: center;
-            color: #0757a0;
-            font-size: 38px;
-            font-weight: 800;
-            margin-bottom: 5px;
+        .header p {
+            font-size: 12px;
         }
 
-        .monthly-label {
-            text-align: center;
-            color: #657d96;
-            font-size: 13px;
-            margin-bottom: 22px;
+        .main-card {
+            padding: 22px 18px;
+
+            border-radius:
+                0 0 18px 18px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
         }
 
         .summary {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: 1fr;
         }
 
-        .summary-item {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #e0ebf7;
+        .monthly-payment {
+            font-size: 32px;
         }
 
-        .summary-item span {
-            display: block;
-            color: #71869d;
-            font-size: 12px;
-            margin-bottom: 6px;
-        }
-
-        .summary-item strong {
-            color: #183153;
-            font-size: 16px;
-        }
-
-        /* Notice */
-        .notice {
-            margin-top: 20px;
-            background: #fff9e9;
-            border: 1px solid #f3df9c;
-            border-radius: 12px;
-            padding: 13px 15px;
-            color: #735b18;
-            font-size: 12px;
-            line-height: 1.7;
-        }
-
-        .notice strong {
-            color: #654e0b;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px 10px 5px;
-            color: #8294a8;
-            font-size: 11px;
-        }
-
-        /* Error */
-        .error {
-            display: none;
-            margin-top: 12px;
-            padding: 12px 15px;
-            background: #fff0f0;
-            border: 1px solid #ffcaca;
-            border-radius: 10px;
-            color: #a33232;
-            font-size: 13px;
-        }
-
-        .error.show {
-            display: block;
-        }
-
-        /* Mobile */
-        @media (max-width: 700px) {
-
-            body {
-                padding: 10px;
-            }
-
-            .header {
-                padding: 22px 20px;
-                border-radius: 18px 18px 0 0;
-            }
-
-            .header-content {
-                gap: 12px;
-            }
-
-            .logo {
-                width: 48px;
-                height: 48px;
-                font-size: 24px;
-                border-radius: 13px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .header p {
-                font-size: 12px;
-            }
-
-            .main-card {
-                padding: 22px 18px;
-                border-radius: 0 0 18px 18px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .summary {
-                grid-template-columns: 1fr;
-            }
-
-            .monthly-payment {
-                font-size: 32px;
-            }
-
-            .section-title {
-                font-size: 18px;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
+
 
 <body>
 
 <div class="container">
 
-    <!-- Header -->
+    <!-- HEADER -->
+
     <header class="header">
+
         <div class="header-content">
 
             <div class="logo">
@@ -357,15 +524,24 @@
             </div>
 
             <div>
-                <h1>บริการสมาชิกสหกรณ์</h1>
-                <p>Member Portal • โปรแกรมคำนวณเงินกู้</p>
+
+                <h1>
+                    บริการสมาชิกสหกรณ์
+                </h1>
+
+                <p>
+                    Member Portal • โปรแกรมคำนวณเงินกู้
+                </p>
+
             </div>
 
         </div>
+
     </header>
 
 
-    <!-- Main -->
+    <!-- MAIN -->
+
     <main class="main-card">
 
         <h2 class="section-title">
@@ -373,10 +549,10 @@
         </h2>
 
 
-        <!-- Form -->
         <div class="form-grid">
 
-            <!-- Loan Amount -->
+            <!-- LOAN AMOUNT -->
+
             <div class="form-group">
 
                 <label for="loanAmount">
@@ -390,10 +566,12 @@
                         id="loanAmount"
                         min="1"
                         step="100"
-                        placeholder="เช่น 100,000"
+                        placeholder="เช่น 100000"
                     >
 
-                    <span class="unit">บาท</span>
+                    <span class="unit">
+                        บาท
+                    </span>
 
                 </div>
 
@@ -404,7 +582,8 @@
             </div>
 
 
-            <!-- Interest -->
+            <!-- INTEREST -->
+
             <div class="form-group">
 
                 <label for="interestRate">
@@ -421,18 +600,21 @@
                         placeholder="เช่น 5.00"
                     >
 
-                    <span class="unit">%</span>
+                    <span class="unit">
+                        %
+                    </span>
 
                 </div>
 
                 <div class="hint">
-                    เช่น 5.00% ต่อปี
+                    อัตราดอกเบี้ยต่อปี
                 </div>
 
             </div>
 
 
-            <!-- Installment -->
+            <!-- MONTHS -->
+
             <div class="form-group">
 
                 <label for="months">
@@ -449,7 +631,9 @@
                         placeholder="เช่น 60"
                     >
 
-                    <span class="unit">เดือน</span>
+                    <span class="unit">
+                        เดือน
+                    </span>
 
                 </div>
 
@@ -462,12 +646,18 @@
         </div>
 
 
-        <!-- Error -->
-        <div id="errorMessage" class="error"></div>
+        <!-- ERROR -->
+
+        <div
+            id="errorMessage"
+            class="error"
+        ></div>
 
 
-        <!-- Button -->
+        <!-- BUTTON -->
+
         <button
+            type="button"
             class="calculate-btn"
             onclick="calculateLoan()"
         >
@@ -475,7 +665,8 @@
         </button>
 
 
-        <!-- Result -->
+        <!-- RESULT -->
+
         <section
             id="result"
             class="result"
@@ -485,51 +676,82 @@
                 ยอดผ่อนชำระต่อเดือนโดยประมาณ
             </div>
 
+
             <div
                 id="monthlyPayment"
                 class="monthly-payment"
             >
-                0.00 บาท
+                0 บาท
             </div>
 
+
             <div class="monthly-label">
-                ต่อเดือน
+                ปัดขึ้นเป็นจำนวนเต็มสิบบาท
             </div>
 
 
             <div class="summary">
 
                 <div class="summary-item">
-                    <span>เงินต้น</span>
+
+                    <span>
+                        เงินต้น
+                    </span>
+
                     <strong id="resultPrincipal">
                         0.00 บาท
                     </strong>
+
                 </div>
 
+
                 <div class="summary-item">
-                    <span>ดอกเบี้ยรวม</span>
+
+                    <span>
+                        ดอกเบี้ยรวม
+                    </span>
+
                     <strong id="resultInterest">
                         0.00 บาท
                     </strong>
+
                 </div>
 
+
                 <div class="summary-item">
-                    <span>ยอดชำระรวม</span>
+
+                    <span>
+                        ยอดชำระรวม
+                    </span>
+
                     <strong id="resultTotal">
                         0.00 บาท
                     </strong>
+
                 </div>
 
             </div>
 
 
             <div class="notice">
-                <strong>หมายเหตุ:</strong>
-                ผลการคำนวณนี้เป็นการประมาณการเบื้องต้น
-                โดยคำนวณแบบเงินต้นและดอกเบี้ยรวม
-                แล้วแบ่งชำระเป็นจำนวนเท่ากันทุกเดือน
-                อัตราและวิธีการคำนวณจริงอาจแตกต่างกันตาม
-                ประเภทสินเชื่อ ระเบียบ และข้อบังคับของสหกรณ์
+
+                <strong>
+                    หมายเหตุ:
+                </strong>
+
+                ผลการคำนวณนี้เป็นการคำนวณเบื้องต้นเท่านั้น
+                โดยใช้วิธีคำนวณแบบเงินรวม
+                (เงินต้น + ดอกเบี้ย)
+                และแบ่งชำระเป็นจำนวนเท่ากันทุกเดือน
+                โดยยอดผ่อนต่อเดือนถูกปัดขึ้นเป็นจำนวนเต็มสิบบาท
+
+                <br>
+
+                อัตราดอกเบี้ย วิธีคำนวณจริง
+                จำนวนงวด และเงื่อนไขการกู้
+                อาจแตกต่างกันตามประเภทสินเชื่อ
+                ระเบียบ ข้อบังคับ และประกาศของสหกรณ์
+
             </div>
 
         </section>
@@ -538,7 +760,8 @@
 
 
     <footer class="footer">
-        © Member Portal Prototype • ระบบต้นแบบบริการสมาชิกสหกรณ์
+        © Member Portal Prototype
+        • ระบบต้นแบบบริการสมาชิกสหกรณ์
     </footer>
 
 </div>
@@ -546,62 +769,103 @@
 
 <script>
 
+    /* ==========================================
+       ฟังก์ชันจัดรูปแบบตัวเลข
+    ========================================== */
+
     function formatMoney(number) {
 
-        return new Intl.NumberFormat('th-TH', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }).format(number);
+        return new Intl.NumberFormat(
+            "th-TH",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        ).format(number);
 
     }
 
 
+    /* ==========================================
+       แสดง Error
+    ========================================== */
+
     function showError(message) {
 
-        const error = document.getElementById("errorMessage");
+        const error =
+            document.getElementById(
+                "errorMessage"
+            );
 
         error.textContent = message;
+
         error.classList.add("show");
 
     }
 
 
+    /* ==========================================
+       ซ่อน Error
+    ========================================== */
+
     function hideError() {
 
-        const error = document.getElementById("errorMessage");
-
-        error.classList.remove("show");
+        document
+            .getElementById("errorMessage")
+            .classList.remove("show");
 
     }
 
+
+    /* ==========================================
+       คำนวณเงินกู้
+    ========================================== */
 
     function calculateLoan() {
 
         hideError();
 
+
+        // รับค่าจากผู้ใช้
+
         const loanAmount =
             parseFloat(
-                document.getElementById("loanAmount").value
+                document.getElementById(
+                    "loanAmount"
+                ).value
             );
+
 
         const interestRate =
             parseFloat(
-                document.getElementById("interestRate").value
+                document.getElementById(
+                    "interestRate"
+                ).value
             );
+
 
         const months =
             parseInt(
-                document.getElementById("months").value
+                document.getElementById(
+                    "months"
+                ).value
             );
 
 
-        // ตรวจสอบข้อมูล
-        if (!loanAmount || loanAmount <= 0) {
+        /* ======================================
+           ตรวจสอบข้อมูล
+        ====================================== */
 
-            showError("กรุณาระบุยอดเงินที่ต้องการกู้ให้ถูกต้อง");
+        if (
+            isNaN(loanAmount) ||
+            loanAmount <= 0
+        ) {
+
+            showError(
+                "กรุณาระบุยอดเงินที่ต้องการกู้ให้ถูกต้อง"
+            );
 
             return;
-
         }
 
 
@@ -610,97 +874,146 @@
             interestRate < 0
         ) {
 
-            showError("กรุณาระบุอัตราดอกเบี้ยต่อปีให้ถูกต้อง");
+            showError(
+                "กรุณาระบุอัตราดอกเบี้ยต่อปีให้ถูกต้อง"
+            );
 
             return;
-
         }
 
 
         if (
-            !months ||
+            isNaN(months) ||
             months <= 0 ||
             !Number.isInteger(months)
         ) {
 
-            showError("กรุณาระบุจำนวนงวดเป็นจำนวนเดือนให้ถูกต้อง");
+            showError(
+                "กรุณาระบุจำนวนงวดเป็นจำนวนเดือนให้ถูกต้อง"
+            );
 
             return;
-
         }
 
 
-        /*
-         * วิธีคำนวณแบบเงินรวม
-         *
-         * ดอกเบี้ยรวม =
-         * เงินต้น × อัตราดอกเบี้ยต่อปี × จำนวนปี
-         *
-         * จำนวนปี = จำนวนเดือน / 12
-         *
-         * ยอดชำระรวม =
-         * เงินต้น + ดอกเบี้ยรวม
-         *
-         * ยอดผ่อนต่อเดือน =
-         * ยอดชำระรวม / จำนวนเดือน
-         */
+        /* ======================================
+           สูตรคำนวณแบบเงินรวม
 
-        const years = months / 12;
+           ดอกเบี้ยรวม =
+           เงินต้น × อัตราดอกเบี้ยต่อปี × จำนวนปี
+
+           จำนวนปี =
+           จำนวนเดือน ÷ 12
+
+           ยอดชำระรวม =
+           เงินต้น + ดอกเบี้ย
+
+           ยอดผ่อนก่อนปัด =
+           ยอดชำระรวม ÷ จำนวนเดือน
+        ====================================== */
+
+        const years =
+            months / 12;
+
 
         const interest =
             loanAmount *
             (interestRate / 100) *
             years;
 
-        const totalPayment =
-            loanAmount + interest;
 
-        const monthlyPayment =
+        const totalPayment =
+            loanAmount +
+            interest;
+
+
+        const calculatedMonthlyPayment =
             totalPayment / months;
 
 
-        // แสดงผล
-        document.getElementById("monthlyPayment")
-            .textContent =
-            formatMoney(monthlyPayment) + " บาท";
+        /* ======================================
+           ปัดยอดผ่อน "ขึ้น" เป็นจำนวนเต็มสิบ
+
+           ตัวอย่าง
+
+           2,341 → 2,350
+           2,350 → 2,350
+           2,351 → 2,360
+        ====================================== */
+
+        const monthlyPayment =
+            Math.ceil(
+                calculatedMonthlyPayment / 10
+            ) * 10;
 
 
-        document.getElementById("resultPrincipal")
-            .textContent =
-            formatMoney(loanAmount) + " บาท";
+        /* ======================================
+           แสดงผล
+        ====================================== */
+
+        document.getElementById(
+            "monthlyPayment"
+        ).textContent =
+            formatMoney(monthlyPayment)
+            + " บาท";
 
 
-        document.getElementById("resultInterest")
-            .textContent =
-            formatMoney(interest) + " บาท";
+        document.getElementById(
+            "resultPrincipal"
+        ).textContent =
+            formatMoney(loanAmount)
+            + " บาท";
 
 
-        document.getElementById("resultTotal")
-            .textContent =
-            formatMoney(totalPayment) + " บาท";
+        document.getElementById(
+            "resultInterest"
+        ).textContent =
+            formatMoney(interest)
+            + " บาท";
 
 
-        document.getElementById("result")
-            .classList.add("show");
+        /*
+         * แสดงยอดชำระรวมตามสูตรเดิม
+         * ก่อนการปัดยอดผ่อน
+         */
+        document.getElementById(
+            "resultTotal"
+        ).textContent =
+            formatMoney(totalPayment)
+            + " บาท";
 
 
-        // เลื่อนหน้าจอไปยังผลลัพธ์
-        document.getElementById("result")
-            .scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
+        /* แสดงกล่องผลลัพธ์ */
+
+        document.getElementById(
+            "result"
+        ).classList.add("show");
+
+
+        /* เลื่อนหน้าจอไปยังผลลัพธ์ */
+
+        document.getElementById(
+            "result"
+        ).scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
 
     }
 
 
-    // กด Enter เพื่อคำนวณ
+    /* ==========================================
+       กด Enter เพื่อคำนวณ
+    ========================================== */
+
     document.addEventListener(
         "keydown",
         function(event) {
 
             if (event.key === "Enter") {
+
                 calculateLoan();
+
             }
 
         }
