@@ -9,7 +9,7 @@
         <path d="M6 12h.01M18 12h.01"></path>
       </svg>
     </div>
-    <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: 0.3px; color: #ffffff;">โปรแกรมคำนวณเงินกู้ฉุกเฉิน</h2>
+    <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: 0.3px; color: #ffffff;">โปรแกรมคำนวณเงินกู้</h2>
     <p style="margin: 6px 0 0 0; font-size: 13px; color: #93c5fd; font-weight: 300;">ระบบประมาณการยอดผ่อนชำระสำหรับสมาชิกสหกรณ์</p>
   </div>
 
