@@ -3,169 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมคำนวณเงินกู้ฉุกเฉิน - บริการสมาชิกสหกรณ์</title>
-    <!-- Tailwind CSS CDN สำหรับการจัดสไตล์ Modern UI -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Prompt Font จาก Google Fonts -->
+    <title>ระบบคำนวณเงินกู้ฉุกเฉิน - บริการสมาชิกสหกรณ์</title>
+    <!-- Google Fonts: Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body {
+        :root {
+            --primary-blue: #1E3A8A;
+            --primary-hover: #1E40AF;
+            --secondary-blue: #3B82F6;
+            --bg-light: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --accent-green: #10B981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: 'Prompt', sans-serif;
-            background-color: #f4f7fa;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%);
+            color: #FFFFFF;
+            padding: 28px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-header .icon-wrapper {
+            background: rgba(255, 255, 255, 0.15);
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        .card-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .card-header p {
+            font-size: 0.875rem;
+            color: #94A3B8;
+            margin-top: 4px;
+            font-weight: 300;
+        }
+
+        .card-body {
+            padding: 28px 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            width: 20px;
+            height: 20px;
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            font-size: 1rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.2s ease;
+            color: var(--text-dark);
+            background-color: #FAFAFA;
+        }
+
+        .input-control:focus {
+            border-color: var(--secondary-blue);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+        }
+
+        .unit-text {
+            position: absolute;
+            right: 14px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .btn-calc {
+            width: 100%;
+            background-color: var(--primary-blue);
+            color: #FFFFFF;
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+        }
+
+        .btn-calc:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-calc:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            margin-top: 28px;
+            padding: 20px;
+            background: #F1F5F9;
+            border-radius: 16px;
+            border: 1px solid #E2E8F0;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .result-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .result-amount span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .summary-details {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed #CBD5E1;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.813rem;
+            color: var(--text-muted);
+        }
+
+        .summary-details strong {
+            color: var(--text-dark);
+        }
+
+        .disclaimer-box {
+            margin-top: 20px;
+            padding: 12px 14px;
+            background-color: #FEF3C7;
+            border-left: 4px solid #F59E0B;
+            border-radius: 6px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .disclaimer-box i {
+            color: #D97706;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .disclaimer-box p {
+            font-size: 0.775rem;
+            color: #92400E;
+            line-height: 1.4;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body>
 
-    <!-- Card Container -->
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
-        
-        <!-- Header Section -->
-        <div class="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-white text-center relative">
-            <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+    <div class="portal-card">
+        <!-- Header -->
+        <div class="card-header">
+            <div class="icon-wrapper">
+                <i data-lucide="calculator" style="width: 28px; height: 28px;"></i>
             </div>
-            <h1 class="text-xl font-bold tracking-wide">คำนวณเงินกู้ฉุกเฉิน</h1>
-            <p class="text-blue-100 text-xs mt-1">บริการประมาณการยอดผ่อนชำระสำหรับสมาชิก</p>
+            <h1>คำนวณเงินกู้ฉุกเฉิน</h1>
+            <p>ระบบบริการสมาชิกสหกรณ์ออนไลน์ (Member Portal)</p>
         </div>
 
-        <!-- Form Section -->
-        <form id="loanForm" class="p-6 space-y-5" onsubmit="calculateLoan(event)">
-            
-            <!-- 1. ยอดเงินที่ต้องการกู้ -->
-            <div>
-                <label for="amount" class="block text-sm font-semibold text-slate-700 mb-1">
-                    ยอดเงินที่ต้องการกู้ (บาท) <span class="text-red-500">*</span>
-                </label>
-                <div class="relative rounded-lg shadow-sm">
-                    <input type="number" id="amount" required min="1000" step="500" placeholder="เช่น 50000"
-                        class="w-full px-4 py-3 pl-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-slate-800 font-medium">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                        ฿
+        <!-- Body / Form -->
+        <div class="card-body">
+            <form id="loanForm" onsubmit="event.preventDefault(); calculateLoan();">
+                <!-- Input 1: Loan Amount -->
+                <div class="form-group">
+                    <label for="amount">ยอดเงินที่ต้องการกู้ (บาท)</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="banknote"></i>
+                        <input type="text" id="amount" class="input-control" placeholder="ระบุจำนวนเงิน" required pattern="^[0-9,]+$" autocomplete="off">
+                        <span class="unit-text">บาท</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- 2. อัตราดอกเบี้ยต่อปี -->
-            <div>
-                <label for="interest" class="block text-sm font-semibold text-slate-700 mb-1">
-                    อัตราดอกเบี้ยต่อปี (%) <span class="text-red-500">*</span>
-                </label>
-                <div class="relative rounded-lg shadow-sm">
-                    <input type="number" id="interest" required min="0.1" step="0.01" placeholder="เช่น 6.50"
-                        class="w-full px-4 py-3 pl-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-slate-800 font-medium">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                        %
+                <!-- Input 2: Interest Rate -->
+                <div class="form-group">
+                    <label for="interest">อัตราดอกเบี้ยต่อปี (%)</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="percent"></i>
+                        <input type="number" id="interest" class="input-control" placeholder="เช่น 6.50" step="0.01" min="0" max="100" required>
+                        <span class="unit-text">% ต่อปี</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- 3. จำนวนงวดที่ต้องการผ่อน -->
-            <div>
-                <label for="months" class="block text-sm font-semibold text-slate-700 mb-1">
-                    จำนวนงวดที่ต้องการผ่อน (เดือน) <span class="text-red-500">*</span>
-                </label>
-                <div class="relative rounded-lg shadow-sm">
-                    <input type="number" id="months" required min="1" max="120" placeholder="เช่น 12"
-                        class="w-full px-4 py-3 pl-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-slate-800 font-medium">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
+                <!-- Input 3: Period (Months) -->
+                <div class="form-group">
+                    <label for="months">จำนวนงวดที่ต้องการผ่อน (เดือน)</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="calendar"></i>
+                        <input type="number" id="months" class="input-control" placeholder="ระบุจำนวนเดือน" min="1" max="120" required>
+                        <span class="unit-text">เดือน</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- Action Button -->
-            <button type="submit"
-                class="w-full bg-blue-800 hover:bg-blue-900 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                </svg>
-                คำนวณยอดผ่อน
-            </button>
-        </form>
+                <!-- Action Button -->
+                <button type="submit" class="btn-calc">
+                    <i data-lucide="calculator"></i>
+                    คำนวณยอดผ่อน
+                </button>
+            </form>
 
-        <!-- Result Display Section -->
-        <div id="resultBox" class="hidden mx-6 mb-6 p-5 bg-blue-50/80 border border-blue-200 rounded-xl text-center">
-            <span class="text-xs font-semibold uppercase tracking-wider text-blue-700 block mb-1">
-                ยอดผ่อนชำระต่อเดือนโดยประมาณ
-            </span>
-            <div class="text-3xl font-extrabold text-blue-900 my-1" id="monthlyPayment">
-                0.00
-            </div>
-            <span class="text-sm font-medium text-slate-600 mb-3 block">บาท / เดือน</span>
-
-            <!-- Technical Detail Breakdown -->
-            <div class="border-t border-blue-200/60 pt-3 mt-3 text-xs text-slate-600 space-y-1 text-left">
-                <div class="flex justify-between">
-                    <span>วงเงินกู้รวม:</span>
-                    <span id="summaryAmount" class="font-semibold text-slate-800">-</span>
+            <!-- Result Display -->
+            <div id="resultBox" class="result-container">
+                <div class="result-title">ยอดผ่อนชำระต่อเดือนโดยประมาณ</div>
+                <div class="result-amount" id="monthlyPayment">0.00 <span>บาท/เดือน</span></div>
+                
+                <div class="summary-details">
+                    <div>รวมดอกเบี้ยโดยประมาณ: <strong id="totalInterest">0.00</strong> บาท</div>
+                    <div>รวมยอดชำระทั้งสิ้น: <strong id="totalPayment">0.00</strong> บาท</div>
                 </div>
-                <div class="flex justify-between">
-                    <span>ดอกเบี้ยรวมประมาณ:</span>
-                    <span id="summaryInterest" class="font-semibold text-slate-800">-</span>
-                </div>
-            </div>
 
-            <!-- Disclaimer -->
-            <div class="mt-4 pt-3 border-t border-blue-200/60 text-[11px] text-slate-500 leading-relaxed text-left flex items-start gap-1.5">
-                <svg class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                </svg>
-                <span><strong>หมายเหตุ:</strong> การคำนวณนี้เป็นการประมาณการเบื้องต้นด้วยวิธีลดต้นลดดอก ยอดผ่อนชำระจริงอาจมีการเปลี่ยนแปลงขึ้นอยู่กับเงื่อนไข วันที่เริ่มสัญญา และข้อกำหนดของสหกรณ์</span>
+                <!-- Financial Disclaimer -->
+                <div class="disclaimer-box">
+                    <i data-lucide="alert-triangle"></i>
+                    <p><strong>หมายเหตุ:</strong> ผลการคำนวณนี้เป็นเพียงการประเมินเบื้องต้น ยอดผ่อนชำระจริงอาจมีการเปลี่ยนแปลงขึ้นอยู่กับเงื่อนไข วันที่อนุมัติสัญญา และรอบการตัดจ่ายเงินเดือนของสหกรณ์</p>
+                </div>
             </div>
         </div>
-
     </div>
 
-    <!-- JavaScript Calculation Logic -->
     <script>
-        function calculateLoan(e) {
-            e.preventDefault();
+        // Initialize Icons
+        lucide.createIcons();
 
-            const principal = parseFloat(document.getElementById('amount').value);
+        // Format Currency Input (Adding commas)
+        const amountInput = document.getElementById('amount');
+        amountInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/,/g, '');
+            if (!isNaN(value) && value.length > 0) {
+                e.target.value = Number(value).toLocaleString('en-US');
+            } else if (value.length === 0) {
+                e.target.value = '';
+            }
+        });
+
+        // Calculation Function (Annuity Formula / PMT)
+        function calculateLoan() {
+            const rawAmount = document.getElementById('amount').value.replace(/,/g, '');
+            const principal = parseFloat(rawAmount);
             const annualRate = parseFloat(document.getElementById('interest').value);
             const months = parseInt(document.getElementById('months').value);
 
-            if (isNaN(principal) || isNaN(annualRate) || isNaN(months) || principal <= 0 || months <= 0) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้องครบถ้วน');
+            if (!principal || !annualRate || !months || principal <= 0 || months <= 0) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง');
                 return;
             }
 
-            // คำนวณดอกเบี้ยรายเดือน (Reducing Balance Method - Amortization)
             const monthlyRate = (annualRate / 100) / 12;
             let monthlyPayment = 0;
 
             if (monthlyRate === 0) {
                 monthlyPayment = principal / months;
             } else {
-                monthlyPayment = (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / 
-                                 (Math.pow(1 + monthlyRate, months) - 1);
+                // Formula: PMT = [P * r * (1 + r)^n] / [(1 + r)^n - 1]
+                monthlyPayment = (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
             }
 
-            const totalRepayment = monthlyPayment * months;
-            const totalInterest = totalRepayment - principal;
+            const totalPayment = monthlyPayment * months;
+            const totalInterest = totalPayment - principal;
 
-            // แสดงผลลัพธ์
-            document.getElementById('monthlyPayment').innerText = monthlyPayment.toLocaleString('th-TH', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+            // Render Results
+            document.getElementById('monthlyPayment').innerHTML = `${monthlyPayment.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span>บาท/เดือน</span>`;
+            document.getElementById('totalInterest').innerText = totalInterest.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('totalPayment').innerText = totalPayment.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            document.getElementById('summaryAmount').innerText = principal.toLocaleString('th-TH') + ' บาท';
-            document.getElementById('summaryInterest').innerText = totalInterest.toLocaleString('th-TH', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }) + ' บาท';
-
-            // แสดง Result Box
-            const resultBox = document.getElementById('resultBox');
-            resultBox.classList.remove('hidden');
-            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // Display Result Container
+            document.getElementById('resultBox').style.display = 'block';
         }
     </script>
 </body>
+</html>
 </html>
