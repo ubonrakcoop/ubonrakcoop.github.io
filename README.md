@@ -1,84 +1,171 @@
-<div style="font-family: 'Prompt', 'Sarabun', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 480px; margin: 20px auto; background-color: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05); border: 1px solid #e2e8f0; overflow: hidden; color: #1e293b; box-sizing: border-box;">
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมคำนวณเงินกู้ - บริการสมาชิกสหกรณ์</title>
+    <!-- Tailwind CSS CDN สำหรับการจัดสไตล์ Modern UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Prompt Font จาก Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f4f7fa;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-  <!-- Header Banner -->
-  <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%); padding: 24px 20px; text-align: center; color: #ffffff;">
-    <div style="width: 48px; height: 48px; background-color: rgba(255, 255, 255, 0.12); border-radius: 50%; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center;">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-        <circle cx="12" cy="12" r="2"></circle>
-        <path d="M6 12h.01M18 12h.01"></path>
-      </svg>
+    <!-- Card Container -->
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+        
+        <!-- Header Section -->
+        <div class="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-white text-center relative">
+            <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h1 class="text-xl font-bold tracking-wide">คำนวณเงินกู้</h1>
+            <p class="text-blue-100 text-xs mt-1">บริการประมาณการยอดผ่อนชำระสำหรับสมาชิก</p>
+        </div>
+
+        <!-- Form Section -->
+        <form id="loanForm" class="p-6 space-y-5" onsubmit="calculateLoan(event)">
+            
+            <!-- 1. ยอดเงินที่ต้องการกู้ -->
+            <div>
+                <label for="amount" class="block text-sm font-semibold text-slate-700 mb-1">
+                    ยอดเงินที่ต้องการกู้ (บาท) <span class="text-red-500">*</span>
+                </label>
+                <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="amount" required min="1000" step="500" placeholder="เช่น 50000"
+                        class="w-full px-4 py-3 pl-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-slate-800 font-medium">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        ฿
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. อัตราดอกเบี้ยต่อปี -->
+            <div>
+                <label for="interest" class="block text-sm font-semibold text-slate-700 mb-1">
+                    อัตราดอกเบี้ยต่อปี (%) <span class="text-red-500">*</span>
+                </label>
+                <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="interest" required min="0.1" step="0.01" placeholder="เช่น 6.50"
+                        class="w-full px-4 py-3 pl-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-slate-800 font-medium">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        %
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. จำนวนงวดที่ต้องการผ่อน -->
+            <div>
+                <label for="months" class="block text-sm font-semibold text-slate-700 mb-1">
+                    จำนวนงวดที่ต้องการผ่อน (เดือน) <span class="text-red-500">*</span>
+                </label>
+                <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="months" required min="1" max="120" placeholder="เช่น 12"
+                        class="w-full px-4 py-3 pl-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition text-slate-800 font-medium">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button type="submit"
+                class="w-full bg-blue-800 hover:bg-blue-900 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-xl transform active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+                คำนวณยอดผ่อน
+            </button>
+        </form>
+
+        <!-- Result Display Section -->
+        <div id="resultBox" class="hidden mx-6 mb-6 p-5 bg-blue-50/80 border border-blue-200 rounded-xl text-center">
+            <span class="text-xs font-semibold uppercase tracking-wider text-blue-700 block mb-1">
+                ยอดผ่อนชำระต่อเดือนโดยประมาณ
+            </span>
+            <div class="text-3xl font-extrabold text-blue-900 my-1" id="monthlyPayment">
+                0.00
+            </div>
+            <span class="text-sm font-medium text-slate-600 mb-3 block">บาท / เดือน</span>
+
+            <!-- Technical Detail Breakdown -->
+            <div class="border-t border-blue-200/60 pt-3 mt-3 text-xs text-slate-600 space-y-1 text-left">
+                <div class="flex justify-between">
+                    <span>วงเงินกู้รวม:</span>
+                    <span id="summaryAmount" class="font-semibold text-slate-800">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>ดอกเบี้ยรวมประมาณ:</span>
+                    <span id="summaryInterest" class="font-semibold text-slate-800">-</span>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="mt-4 pt-3 border-t border-blue-200/60 text-[11px] text-slate-500 leading-relaxed text-left flex items-start gap-1.5">
+                <svg class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <span><strong>หมายเหตุ:</strong> การคำนวณนี้เป็นการประมาณการเบื้องต้นด้วยวิธีลดต้นลดดอก ยอดผ่อนชำระจริงอาจมีการเปลี่ยนแปลงขึ้นอยู่กับเงื่อนไข วันที่เริ่มสัญญา และข้อกำหนดของสหกรณ์</span>
+            </div>
+        </div>
+
     </div>
-    <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: 0.3px; color: #ffffff;">โปรแกรมคำนวณเงินกู้</h2>
-    <p style="margin: 6px 0 0 0; font-size: 13px; color: #93c5fd; font-weight: 300;">ระบบประมาณการยอดผ่อนชำระสำหรับสมาชิกสหกรณ์</p>
-  </div>
 
-  <!-- Form Body -->
-  <form action="" onsubmit="return false;" style="padding: 24px; margin: 0;">
-    
-    <!-- Field 1: Amount -->
-    <div style="margin-bottom: 18px;">
-      <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">
-        1. ยอดเงินที่ต้องการกู้ (บาท) <span style="color: #ef4444;">*</span>
-      </label>
-      <div style="position: relative;">
-        <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600; font-size: 15px;">฿</span>
-        <input type="number" placeholder="เช่น 50000" min="1000" step="500" required style="width: 100%; padding: 12px 14px 12px 36px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 15px; font-weight: 500; color: #0f172a; outline: none; box-sizing: border-box; background-color: #f8fafc;" />
-      </div>
-    </div>
+    <!-- JavaScript Calculation Logic -->
+    <script>
+        function calculateLoan(e) {
+            e.preventDefault();
 
-    <!-- Field 2: Interest -->
-    <div style="margin-bottom: 18px;">
-      <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">
-        2. อัตราดอกเบี้ยต่อปี (%) <span style="color: #ef4444;">*</span>
-      </label>
-      <div style="position: relative;">
-        <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600; font-size: 14px;">%</span>
-        <input type="number" placeholder="เช่น 6.50" min="0.01" step="0.01" required style="width: 100%; padding: 12px 14px 12px 36px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 15px; font-weight: 500; color: #0f172a; outline: none; box-sizing: border-box; background-color: #f8fafc;" />
-      </div>
-    </div>
+            const principal = parseFloat(document.getElementById('amount').value);
+            const annualRate = parseFloat(document.getElementById('interest').value);
+            const months = parseInt(document.getElementById('months').value);
 
-    <!-- Field 3: Months -->
-    <div style="margin-bottom: 22px;">
-      <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">
-        3. จำนวนงวดที่ต้องการผ่อน (เดือน) <span style="color: #ef4444;">*</span>
-      </label>
-      <div style="position: relative;">
-        <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 14px;">📅</span>
-        <input type="number" placeholder="เช่น 12" min="1" max="120" required style="width: 100%; padding: 12px 14px 12px 38px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 15px; font-weight: 500; color: #0f172a; outline: none; box-sizing: border-box; background-color: #f8fafc;" />
-      </div>
-    </div>
+            if (isNaN(principal) || isNaN(annualRate) || isNaN(months) || principal <= 0 || months <= 0) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้องครบถ้วน');
+                return;
+            }
 
-    <!-- Submit Button -->
-    <button type="submit" style="width: 100%; background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%); color: #ffffff; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25); display: flex; align-items: center; justify-content: center; gap: 8px;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-      </svg>
-      คำนวณยอดผ่อน
-    </button>
-  </form>
+            // คำนวณดอกเบี้ยรายเดือน (Reducing Balance Method - Amortization)
+            const monthlyRate = (annualRate / 100) / 12;
+            let monthlyPayment = 0;
 
-  <!-- Result Display Box -->
-  <div style="margin: 0 24px 24px 24px; padding: 20px; background-color: #eff6ff; border: 1.5px dashed #93c5fd; border-radius: 12px; text-align: center;">
-    <span style="font-size: 12px; font-weight: 700; color: #1e40af; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
-      ยอดผ่อนชำระต่อเดือนโดยประมาณ
-    </span>
-    
-    <div style="font-size: 32px; font-weight: 800; color: #1e3a8a; line-height: 1.2; margin: 4px 0;">
-      0.00 <span style="font-size: 14px; font-weight: 500; color: #475569;">บาท / เดือน</span>
-    </div>
+            if (monthlyRate === 0) {
+                monthlyPayment = principal / months;
+            } else {
+                monthlyPayment = (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / 
+                                 (Math.pow(1 + monthlyRate, months) - 1);
+            }
 
-    <!-- Disclaimer -->
-    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #dbeafe; font-size: 11px; color: #64748b; line-height: 1.6; text-align: left; display: flex; align-items: flex-start; gap: 6px;">
-      <span style="color: #f59e0b; font-size: 14px; line-height: 1;">⚠️</span>
-      <span><strong>ข้อระบุสำคัญ:</strong> การคำนวณนี้เป็นการประมาณการเบื้องต้นเท่านั้น ยอดผ่อนชำระจริงอาจมีการเปลี่ยนแปลงตามวันทำสัญญา เงื่อนไขดอกเบี้ยลดต้นลดดอก และข้อกำหนดอย่างเป็นทางการของสหกรณ์</span>
-    </div>
-  </div>
+            const totalRepayment = monthlyPayment * months;
+            const totalInterest = totalRepayment - principal;
 
-  <!-- Footer -->
-  <div style="background-color: #f8fafc; padding: 12px 20px; border-top: 1px solid #f1f5f9; text-align: center; font-size: 11px; color: #94a3b8;">
-    ระบบบริการสมาชิกสหกรณ์ออมทรัพย์ (Member Portal Prototype)
-  </div>
+            // แสดงผลลัพธ์
+            document.getElementById('monthlyPayment').innerText = monthlyPayment.toLocaleString('th-TH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
 
-</div>
+            document.getElementById('summaryAmount').innerText = principal.toLocaleString('th-TH') + ' บาท';
+            document.getElementById('summaryInterest').innerText = totalInterest.toLocaleString('th-TH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + ' บาท';
+
+            // แสดง Result Box
+            const resultBox = document.getElementById('resultBox');
+            resultBox.classList.remove('hidden');
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
