@@ -87,12 +87,19 @@
             align-items: center;
             justify-content: center;
 
-            background: rgba(255,255,255,0.16);
+            background: var(--white);
             border: 1px solid rgba(255,255,255,0.25);
 
             border-radius: 16px;
+            padding: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
 
-            font-size: 29px;
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .header h1 {
@@ -478,8 +485,6 @@
             .logo {
                 width: 48px;
                 height: 48px;
-
-                font-size: 24px;
             }
 
             .header h1 {
@@ -526,7 +531,7 @@
         <div class="header-content">
 
             <div class="logo">
-                💰
+                <img src="https://ubonrakcoop.wordpress.com/wp-content/uploads/2026/09/logo-e0b8aae0b8b5-png.png" alt="โลโก้ สหกรณ์ออมทรัพย์อุบลรักษ์ ธนบุรี จำกัด">
             </div>
 
             <div>
@@ -783,7 +788,7 @@
 
     <footer class="footer">
         © Member Portal Prototype
-        • ระบบบริการสมาชิกสหกรณ์
+        • ระบบต้นแบบบริการสมาชิกสหกรณ์
     </footer>
 
 </div>
@@ -1104,4 +1109,3 @@
 
 </body>
 </html>
-
