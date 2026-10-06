@@ -3,46 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมคำนวณค่างวดเงินกู้ | สหกรณ์ออมทรัพย์อุบลรักษ์ ธนบุรี จำกัด</title>
 
-    <title>โปรแกรมคำนวณค่างวดเงินกู้ | Member Portal</title>
+    <!-- Google Fonts: Noto Sans Thai -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================================
+           1. CSS VARIABLES & RESET
+        ========================================= */
+        :root {
+            --primary-dark: #0747a6;
+            --primary: #0052cc;
+            --primary-light: #2684ff;
+            --bg-page: #f4f7fa;
+            --card-bg: #ffffff;
+            --text-main: #172b4d;
+            --text-muted: #5e6c84;
+            --border-color: #dfe1e6;
+            --error-color: #de350b;
+            --error-bg: #ffebe6;
+            --warning-bg: #fffae6;
+            --warning-border: #ffe380;
+            --warning-text: #172b4d;
+            --success-bg: #e3fcef;
+            --success-text: #006644;
+            
+            --shadow-sm: 0 2px 4px rgba(9, 30, 66, 0.08);
+            --shadow-md: 0 4px 12px rgba(9, 30, 66, 0.12);
+            --shadow-lg: 0 8px 24px rgba(9, 30, 66, 0.16);
+            
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
-
-        :root {
-            --primary: #0757a0;
-            --primary-dark: #06447c;
-            --primary-light: #0d78d5;
-            --bg: #eef6ff;
-            --text: #183153;
-            --muted: #71869d;
-            --border: #d7e4f0;
-            --white: #ffffff;
+            font-family: 'Noto Sans Thai', sans-serif;
         }
 
         body {
-            font-family:
-                "Noto Sans Thai",
-                "Segoe UI",
-                Tahoma,
-                sans-serif;
-
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px 12px;
             min-height: 100vh;
-            padding: 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #eaf5ff 0%,
-                    #f8fbff 50%,
-                    #edf7ff 100%
-                );
-
-            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
         .container {
@@ -51,120 +64,80 @@
             margin: 0 auto;
         }
 
-        /* =========================
-           HEADER
-        ========================== */
-
-        .header {
-            color: white;
-
-            padding: 28px 30px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--primary-dark),
-                    var(--primary-light)
-                );
-
-            border-radius: 22px 22px 0 0;
-
-            box-shadow:
-                0 12px 35px rgba(0, 80, 150, 0.18);
+        /* =========================================
+           2. BRANDING & HEADER
+        ========================================= */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: #ffffff;
+            padding: 28px 20px;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            box-shadow: var(--shadow-md);
+            text-align: center;
         }
 
-        .header-content {
+        .branding-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 17px;
+            gap: 12px;
         }
 
-        .logo {
-            width: 58px;
-            height: 58px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: var(--white);
-            border: 1px solid rgba(255,255,255,0.25);
-
-            border-radius: 16px;
-            padding: 4px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .logo img {
-            width: 100%;
-            height: 100%;
+        .brand-logo {
+            width: 80px;
+            height: 80px;
             object-fit: contain;
+            background: #ffffff;
+            border-radius: 50%;
+            padding: 6px;
+            box-shadow: var(--shadow-sm);
         }
 
-        .header h1 {
-            font-size: 25px;
-            font-weight: 700;
-            margin-bottom: 5px;
+        .brand-titles h1 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: #f4f5f7;
+            margin-bottom: 4px;
         }
 
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
+        .brand-titles h2 {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #ffffff;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 8px;
+            margin-top: 4px;
         }
 
-        /* =========================
-           MAIN
-        ========================== */
-
+        /* =========================================
+           3. MAIN CARD & FORMS
+        ========================================= */
         .main-card {
-            background: var(--white);
-
-            padding: 32px;
-
-            border-radius: 0 0 22px 22px;
-
-            box-shadow:
-                0 15px 40px rgba(30, 80, 130, 0.10);
+            background: var(--card-bg);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 24px;
         }
 
         .section-title {
-            color: var(--primary);
-
-            font-size: 20px;
+            font-size: 1.25rem;
+            color: var(--primary-dark);
             font-weight: 700;
-
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
         }
-
-        .section-title::before {
-            content: "";
-
-            display: inline-block;
-
-            width: 5px;
-            height: 22px;
-
-            background: var(--primary-light);
-
-            border-radius: 5px;
-
-            margin-right: 10px;
-
-            vertical-align: -4px;
-        }
-
-        /* =========================
-           FORM
-        ========================== */
 
         .form-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group {
@@ -172,940 +145,863 @@
             flex-direction: column;
         }
 
-        label {
-            color: #35516f;
-
-            font-size: 14px;
+        .form-group label {
             font-weight: 600;
-
+            font-size: 0.95rem;
             margin-bottom: 8px;
+            color: var(--primary-dark);
         }
 
         .input-wrapper {
             position: relative;
+            display: flex;
+            align-items: center;
         }
 
-        input {
+        .input-wrapper input {
             width: 100%;
-
-            padding:
-                14px
-                48px
-                14px
-                14px;
-
-            background: #fbfdff;
-
-            border: 1.5px solid var(--border);
-
-            border-radius: 12px;
-
-            color: var(--text);
-
-            font-size: 16px;
-
+            padding: 12px 65px 12px 14px;
+            font-size: 1.05rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
             outline: none;
-
-            transition: 0.2s ease;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            color: var(--text-main);
         }
 
-        input:focus {
-            background: white;
-
+        .input-wrapper input:focus {
             border-color: var(--primary-light);
-
-            box-shadow:
-                0 0 0 4px
-                rgba(13,120,213,0.10);
+            box-shadow: 0 0 0 3px rgba(38, 132, 255, 0.2);
         }
 
-        .unit {
+        .input-wrapper input.invalid {
+            border-color: var(--error-color);
+            background-color: var(--error-bg);
+        }
+
+        .input-unit {
             position: absolute;
-
-            right: 13px;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            color: var(--muted);
-
-            font-size: 13px;
-
+            right: 14px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
             pointer-events: none;
+            font-weight: 500;
         }
 
-        .hint {
-            color: #8798aa;
-
-            font-size: 11px;
-
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
             margin-top: 6px;
+            min-height: 20px;
+            display: none;
+            font-weight: 500;
         }
 
-        /* =========================
-           BUTTON
-        ========================== */
+        /* =========================================
+           4. BUTTONS
+        ========================================= */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
 
-        .calculate-btn {
-            width: 100%;
-
-            margin-top: 25px;
-
-            padding: 15px;
-
-            border: none;
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--primary),
-                    var(--primary-light)
-                );
-
-            color: white;
-
-            font-size: 17px;
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 1.05rem;
             font-weight: 700;
-
+            border: none;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-
-            box-shadow:
-                0 8px 18px
-                rgba(13,120,213,0.22);
-
-            transition: 0.2s ease;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
 
-        .calculate-btn:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 12px 25px
-                rgba(13,120,213,0.28);
+        .btn-primary {
+            background-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 82, 204, 0.25);
         }
 
-        .calculate-btn:active {
-            transform: translateY(0);
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
         }
 
-        /* =========================
-           ERROR
-        ========================== */
+        .btn-secondary {
+            background-color: #ebecf0;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            flex: 0 0 140px;
+        }
 
-        .error {
+        .btn-secondary:hover {
+            background-color: #dfe1e6;
+        }
+
+        /* =========================================
+           5. ALERT & RESULT CARDS
+        ========================================= */
+        .alert-box {
             display: none;
-
-            margin-top: 15px;
-
-            padding: 12px 15px;
-
-            background: #fff0f0;
-
-            border: 1px solid #ffcaca;
-
-            border-radius: 10px;
-
-            color: #a33232;
-
-            font-size: 13px;
+            padding: 16px;
+            background-color: var(--error-bg);
+            border: 1.5px solid var(--error-color);
+            color: var(--error-color);
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
         }
 
-        .error.show {
-            display: block;
-        }
-
-        /* =========================
-           RESULT
-        ========================== */
-
-        .result {
+        .result-container {
             display: none;
-
-            margin-top: 30px;
-
-            padding: 26px;
-
-            background: #f2f8ff;
-
-            border: 1px solid #d7eaff;
-
-            border-radius: 18px;
-        }
-
-        .result.show {
-            display: block;
-
-            animation:
-                fadeIn 0.35s ease;
+            margin-top: 32px;
+            animation: fadeIn 0.4s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .result-title {
-            text-align: center;
-
-            color: #45617d;
-
-            font-size: 14px;
-
-            margin-bottom: 7px;
+        .result-card {
+            background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
+            border: 1.5px solid #b8daff;
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
         }
 
-        .monthly-payment {
+        .highlight-payment {
             text-align: center;
+            padding: 18px;
+            background: #ffffff;
+            border-radius: var(--radius-md);
+            border: 1px solid #cce0ff;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+        }
 
-            color: var(--primary);
+        .highlight-payment .label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
 
-            font-size: 40px;
-
+        .highlight-payment .amount {
+            font-size: 2.3rem;
             font-weight: 800;
-
-            margin-bottom: 5px;
+            color: var(--primary-dark);
+            margin: 4px 0;
         }
 
-        .monthly-label {
-            text-align: center;
-
-            color: #657d96;
-
-            font-size: 13px;
-
-            margin-bottom: 22px;
+        .adjustment-badge {
+            font-size: 0.85rem;
+            color: #0052cc;
+            background-color: #deebff;
+            border: 1px solid #b3d4ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 6px;
+            font-weight: 600;
         }
 
-        /* =========================
-           SUMMARY
-        ========================== */
-
-        .summary {
+        .summary-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
         }
 
         .summary-item {
-            background: white;
-
-            border: 1px solid #e0ebf7;
-
-            border-radius: 12px;
-
-            padding: 15px;
-
-            text-align: center;
+            background: #ffffff;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
         }
 
-        .summary-item span {
+        .summary-item .item-label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
             display: block;
-
-            color: var(--muted);
-
-            font-size: 12px;
-
-            margin-bottom: 6px;
         }
 
-        .summary-item strong {
-            color: var(--text);
-
-            font-size: 16px;
+        .summary-item .item-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
-        /* =========================
-           NOTICE
-        ========================== */
-
-        .notice {
-            margin-top: 20px;
-
-            padding: 14px 15px;
-
-            background: #fff9e9;
-
-            border: 1px solid #f3df9c;
-
-            border-radius: 12px;
-
-            color: #735b18;
-
-            font-size: 12px;
-
-            line-height: 1.8;
+        /* =========================================
+           6. AMORTIZATION TABLE
+        ========================================= */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+            box-shadow: var(--shadow-sm);
         }
 
-        .notice strong {
-            color: #654e0b;
+        .amortization-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 0.95rem;
         }
 
-        /* =========================
-           FOOTER
-        ========================== */
+        .amortization-table th {
+            background-color: var(--primary-dark);
+            color: #ffffff;
+            padding: 12px 14px;
+            font-weight: 600;
+            text-align: right;
+            white-space: nowrap;
+        }
 
-        .footer {
+        .amortization-table th:first-child {
             text-align: center;
-
-            padding: 20px 10px 5px;
-
-            color: #8294a8;
-
-            font-size: 11px;
         }
 
-        /* =========================
-           MOBILE
-        ========================== */
+        .amortization-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: right;
+            white-space: nowrap;
+        }
 
-        @media (max-width: 700px) {
+        .amortization-table td:first-child {
+            text-align: center;
+            font-weight: 600;
+        }
 
-            body {
-                padding: 10px;
+        .amortization-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .amortization-table tbody tr:hover {
+            background-color: #ebecf0;
+        }
+
+        .amortization-table tbody tr.final-row {
+            background-color: #e3fcef;
+            font-weight: 700;
+        }
+
+        .amortization-table tbody tr.final-row td {
+            color: var(--success-text);
+            border-bottom: 2px solid #57d9a3;
+        }
+
+        .table-note {
+            font-size: 0.88rem;
+            color: var(--primary-dark);
+            background-color: #deebff;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+            font-weight: 600;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* =========================================
+           7. TOTAL SUMMARY & DISCLAIMER
+        ========================================= */
+        .total-summary-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .disclaimer-box {
+            background-color: #f4f5f7;
+            border-left: 4px solid var(--primary);
+            padding: 14px 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 24px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            line-height: 1.6;
+        }
+
+        .app-footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 16px 0;
+        }
+
+        /* =========================================
+           8. RESPONSIVE DESIGN
+        ========================================= */
+        @media (max-width: 600px) {
+            .app-header {
+                padding: 20px 16px;
             }
 
-            .header {
-                padding: 22px 18px;
-
-                border-radius:
-                    18px 18px 0 0;
+            .brand-logo {
+                width: 65px;
+                height: 65px;
             }
 
-            .logo {
-                width: 48px;
-                height: 48px;
+            .brand-titles h1 {
+                font-size: 1.1rem;
             }
 
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .header p {
-                font-size: 12px;
+            .brand-titles h2 {
+                font-size: 1.3rem;
             }
 
             .main-card {
-                padding: 22px 18px;
-
-                border-radius:
-                    0 0 18px 18px;
+                padding: 18px;
             }
 
-            .form-grid {
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-secondary {
+                flex: none;
+                width: 100%;
+            }
+
+            .highlight-payment .amount {
+                font-size: 1.75rem;
+            }
+
+            .summary-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .summary {
-                grid-template-columns: 1fr;
-            }
-
-            .monthly-payment {
-                font-size: 32px;
             }
         }
     </style>
 </head>
-
-
 <body>
 
-<div class="container">
-
-    <!-- =========================
-         HEADER
-    ========================== -->
-
-    <header class="header">
-
-        <div class="header-content">
-
-            <div class="logo">
-                <img src="https://ubonrakcoop.wordpress.com/wp-content/uploads/2026/09/logo-e0b8aae0b8b5-png.png" alt="โลโก้ สหกรณ์ออมทรัพย์อุบลรักษ์ ธนบุรี จำกัด">
+    <div class="container">
+        
+        <!-- HEADER & BRANDING -->
+        <header class="app-header">
+            <div class="branding-wrapper">
+                <img src="https://ubonrakcoop.wordpress.com/wp-content/uploads/2026/09/logo-e0b8aae0b8b5-png.png" 
+                     alt="โลโก้สหกรณ์ออมทรัพย์อุบลรักษ์ ธนบุรี จำกัด" 
+                     class="brand-logo">
+                <div class="brand-titles">
+                    <h1>สหกรณ์ออมทรัพย์อุบลรักษ์ ธนบุรี จำกัด</h1>
+                    <h2>โปรแกรมคำนวณค่างวดเงินกู้</h2>
+                </div>
             </div>
+        </header>
 
-            <div>
+        <!-- MAIN CARD -->
+        <main class="main-card">
+            
+            <section class="form-section">
+                <h3 class="section-title">กรอกข้อมูลการกู้ยืม</h3>
+                
+                <form id="loanForm" onsubmit="handleCalculate(event)" novalidate>
+                    <div class="form-grid">
+                        
+                        <!-- 4.1 LOAN AMOUNT -->
+                        <div class="form-group">
+                            <label for="loanAmount">ยอดเงินที่ต้องการกู้ (บาท)</label>
+                            <div class="input-wrapper">
+                                <input type="text" 
+                                       id="loanAmount" 
+                                       placeholder="เช่น 100,000" 
+                                       inputmode="numeric"
+                                       oninput="handleAmountInput(this)">
+                                <span class="input-unit">บาท</span>
+                            </div>
+                            <span class="error-message" id="loanAmountError"></span>
+                        </div>
 
-                <h1>
-                    บริการสมาชิกสหกรณ์
-                </h1>
+                        <!-- 4.2 INTEREST RATE -->
+                        <div class="form-group">
+                            <label for="interestRate">อัตราดอกเบี้ยต่อปี (%)</label>
+                            <div class="input-wrapper">
+                                <input type="number" 
+                                       id="interestRate" 
+                                       placeholder="เช่น 4.50" 
+                                       step="0.01" 
+                                       min="0">
+                                <span class="input-unit">% ต่อปี</span>
+                            </div>
+                            <span class="error-message" id="interestRateError"></span>
+                        </div>
 
-                <p>
-                    Member Portal • โปรแกรมคำนวณค่างวดเงินกู้
-                </p>
+                        <!-- 4.3 INSTALLMENT MONTHS -->
+                        <div class="form-group">
+                            <label for="installmentMonths">จำนวนงวดที่ต้องการผ่อน (เดือน)</label>
+                            <div class="input-wrapper">
+                                <input type="number" 
+                                       id="installmentMonths" 
+                                       placeholder="เช่น 12, 24, 36, 60" 
+                                       step="1" 
+                                       min="1">
+                                <span class="input-unit">เดือน</span>
+                            </div>
+                            <span class="error-message" id="installmentMonthsError"></span>
+                        </div>
 
-            </div>
+                    </div>
 
-        </div>
+                    <!-- BUTTONS -->
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">
+                            <span>คำนวณยอดผ่อน</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <span>ล้างข้อมูล</span>
+                        </button>
+                    </div>
+                </form>
 
-    </header>
+                <!-- ALERT BOX FOR ALGORITHM CONSTRAINTS (8.1) -->
+                <div id="algorithmAlert" class="alert-box"></div>
+            </section>
 
+            <!-- RESULT CONTAINER -->
+            <section id="resultContainer" class="result-container">
+                
+                <h3 class="section-title">ผลการคำนวณ</h3>
 
-    <!-- =========================
-         MAIN
-    ========================== -->
+                <!-- 9. RESULT SUMMARY -->
+                <div class="result-card">
+                    <div class="highlight-payment">
+                        <span class="label">ยอดผ่อนชำระต่อเดือนโดยประมาณ</span>
+                        <div class="amount" id="displayMonthlyPayment">0 บาท / เดือน</div>
+                        <div id="adjustmentBadgeContainer"></div>
+                    </div>
 
-    <main class="main-card">
-
-        <h2 class="section-title">
-            โปรแกรมคำนวณค่างวดเงินกู้
-        </h2>
-
-
-        <!-- FORM -->
-
-        <div class="form-grid">
-
-            <!-- 1. LOAN AMOUNT -->
-
-            <div class="form-group">
-
-                <label for="loanAmount">
-                    1. ยอดเงินที่ต้องการกู้
-                </label>
-
-                <div class="input-wrapper">
-
-                    <input
-                        type="number"
-                        id="loanAmount"
-                        min="1"
-                        step="100"
-                        placeholder="เช่น 100000"
-                    >
-
-                    <span class="unit">
-                        บาท
-                    </span>
-
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="item-label">ยอดเงินกู้</span>
+                            <span class="item-value" id="summaryLoanAmount">0 บาท</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">อัตราดอกเบี้ย</span>
+                            <span class="item-value" id="summaryInterestRate">0% ต่อปี</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">จำนวนงวดที่ผ่อนจริง</span>
+                            <span class="item-value" id="summaryActualMonths">0 เดือน</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">ดอกเบี้ยรวมโดยประมาณ</span>
+                            <span class="item-value" id="summaryTotalInterest">0 บาท</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">ยอดชำระรวมทั้งสิ้น</span>
+                            <span class="item-value" id="summaryTotalRepayment">0 บาท</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="hint">
-                    ระบุจำนวนเงินที่ต้องการกู้
+                <!-- 10. AMORTIZATION TABLE -->
+                <h3 class="section-title">ตารางแสดงรายละเอียดการผ่อนชำระ</h3>
+                <div class="table-wrapper">
+                    <table class="amortization-table">
+                        <thead>
+                            <tr>
+                                <th>งวดที่</th>
+                                <th>ยอดชำระ</th>
+                                <th>เงินต้น</th>
+                                <th>ดอกเบี้ย</th>
+                                <th>เงินต้นคงเหลือ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="amortizationTableBody">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
                 </div>
 
-            </div>
-
-
-            <!-- 2. INTEREST RATE -->
-
-            <div class="form-group">
-
-                <label for="interestRate">
-                    2. อัตราดอกเบี้ยต่อปี
-                </label>
-
-                <div class="input-wrapper">
-
-                    <input
-                        type="number"
-                        id="interestRate"
-                        min="0"
-                        step="0.01"
-                        placeholder="เช่น 5.00"
-                    >
-
-                    <span class="unit">
-                        %
-                    </span>
-
+                <div class="table-note">
+                    * งวดสุดท้ายเป็นงวดปิดยอดหนี้ และถูกคำนวณให้มียอดชำระต่ำที่สุด
                 </div>
 
-                <div class="hint">
-                    เช่น 5.00% ต่อปี
+                <!-- 12. TOTAL SUMMARY -->
+                <div class="total-summary-card">
+                    <div class="summary-item">
+                        <span class="item-label">จำนวนงวดที่ชำระจริง</span>
+                        <span class="item-value" id="tblTotalMonths">0 งวด</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="item-label">เงินต้นรวม</span>
+                        <span class="item-value" id="tblTotalPrincipal">0 บาท</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="item-label">ดอกเบี้ยรวมโดยประมาณ</span>
+                        <span class="item-value" id="tblTotalInterest">0 บาท</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="item-label">ยอดชำระรวม</span>
+                        <span class="item-value" id="tblTotalRepayment">0 บาท</span>
+                    </div>
                 </div>
 
-            </div>
-
-
-            <!-- 3. INSTALLMENT -->
-
-            <div class="form-group">
-
-                <label for="months">
-                    3. จำนวนงวดที่ต้องการผ่อน
-                </label>
-
-                <div class="input-wrapper">
-
-                    <input
-                        type="number"
-                        id="months"
-                        min="1"
-                        step="1"
-                        placeholder="เช่น 60"
-                    >
-
-                    <span class="unit">
-                        เดือน
-                    </span>
-
+                <!-- 15. DISCLAIMER -->
+                <div class="disclaimer-box">
+                    <strong>หมายเหตุ:</strong> ผลการคำนวณนี้เป็นเพียงการประมาณการเบื้องต้นเท่านั้น ยอดผ่อนชำระจริงอาจแตกต่างจากผลการคำนวณ ขึ้นอยู่กับหลักเกณฑ์ อัตราดอกเบี้ย วิธีการคำนวณ และเงื่อนไขของสหกรณ์ โปรดตรวจสอบยอดที่ถูกต้องกับสหกรณ์ก่อนทำธุรกรรม
                 </div>
 
-                <div class="hint">
-                    จำนวนเดือนที่ต้องการชำระ
-                </div>
+            </section>
 
-            </div>
+        </main>
 
-        </div>
+        <footer class="app-footer">
+            &copy; สหกรณ์ออมทรัพย์อุบลรักษ์ ธนบุรี จำกัด - ระบบบริการสมาชิกออนไลน์
+        </footer>
 
+    </div>
 
-        <!-- ERROR -->
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* =========================================
+           1. UTILITY FUNCTIONS
+        ========================================= */
 
-        <div
-            id="errorMessage"
-            class="error"
-        ></div>
-
-
-        <!-- CALCULATE -->
-
-        <button
-            type="button"
-            class="calculate-btn"
-            onclick="calculateLoan()"
-        >
-            คำนวณยอดผ่อน
-        </button>
-
-
-        <!-- =========================
-             RESULT
-        ========================== -->
-
-        <section
-            id="result"
-            class="result"
-        >
-
-            <div class="result-title">
-                ยอดผ่อนชำระต่อเดือนโดยประมาณ
-            </div>
-
-
-            <div
-                id="monthlyPayment"
-                class="monthly-payment"
-            >
-                0 บาท
-            </div>
-
-
-            <div class="monthly-label">
-                ค่างวดแบบลดต้นลดดอก • ปัดเป็นจำนวนเต็มสิบบาท
-            </div>
-
-
-            <!-- SUMMARY -->
-
-            <div class="summary">
-
-                <div class="summary-item">
-
-                    <span>
-                        เงินต้น
-                    </span>
-
-                    <strong id="resultPrincipal">
-                        0.00 บาท
-                    </strong>
-
-                </div>
-
-
-                <div class="summary-item">
-
-                    <span>
-                        ดอกเบี้ยรวมโดยประมาณ
-                    </span>
-
-                    <strong id="resultInterest">
-                        0.00 บาท
-                    </strong>
-
-                </div>
-
-
-                <div class="summary-item">
-
-                    <span>
-                        ยอดชำระรวมโดยประมาณ
-                    </span>
-
-                    <strong id="resultTotal">
-                        0.00 บาท
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- NOTICE -->
-
-            <div class="notice">
-
-                <strong>
-                    หมายเหตุ:
-                </strong>
-
-                ผลการคำนวณนี้เป็นการคำนวณเบื้องต้นเท่านั้น
-                โดยใช้หลักการคำนวณสินเชื่อแบบ
-                <strong>ลดต้นลดดอก</strong>
-                และกำหนดค่างวดรายเดือนให้เท่ากัน
-                โดยยอดค่างวดที่แสดงถูกปัดเป็นจำนวนเต็มสิบบาท
-
-                <br>
-
-                ดอกเบี้ยจริงอาจแตกต่างจากประมาณการ
-                เนื่องจากวิธีการคำนวณของสหกรณ์
-                วันเริ่มสัญญา จำนวนวันในแต่ละงวด
-                การปัดเศษ และเงื่อนไขของผลิตภัณฑ์สินเชื่อ
-
-                <br>
-
-                ระบบนี้เป็นเพียง
-                <strong>ต้นแบบสำหรับประมาณการ</strong>
-                ไม่ใช่ตารางการชำระหนี้หรือใบเสนอสินเชื่ออย่างเป็นทางการ
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <footer class="footer">
-        © Member Portal Prototype
-        • ระบบต้นแบบบริการสมาชิกสหกรณ์
-    </footer>
-
-</div>
-
-
-<script>
-
-    /* =========================================
-       FORMAT MONEY
-    ========================================= */
-
-    function formatMoney(number) {
-
-        return new Intl.NumberFormat(
-            "th-TH",
-            {
+        /**
+         * แปลงตัวเลขเป็นสตริงรูปแบบการเงิน (มีคอมม่า และทศนิยม 2 ตำแหน่ง)
+         */
+        function formatCurrency(amount) {
+            if (isNaN(amount) || amount === null) return "0.00";
+            return new Intl.NumberFormat('th-TH', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
-            }
-        ).format(number);
-
-    }
-
-
-    /* =========================================
-       SHOW ERROR
-    ========================================= */
-
-    function showError(message) {
-
-        const error =
-            document.getElementById(
-                "errorMessage"
-            );
-
-        error.textContent = message;
-
-        error.classList.add("show");
-
-    }
-
-
-    /* =========================================
-       HIDE ERROR
-    ========================================= */
-
-    function hideError() {
-
-        document
-            .getElementById("errorMessage")
-            .classList.remove("show");
-
-    }
-
-
-    /* =========================================
-       CALCULATE LOAN
-       สูตรลดต้นลดดอก
-    ========================================= */
-
-    function calculateLoan() {
-
-        hideError();
-
-
-        /* -----------------------------------------
-           รับค่าจาก Input
-        ----------------------------------------- */
-
-        const loanAmount =
-            parseFloat(
-                document.getElementById(
-                    "loanAmount"
-                ).value
-            );
-
-
-        const annualRate =
-            parseFloat(
-                document.getElementById(
-                    "interestRate"
-                ).value
-            );
-
-
-        const months =
-            parseInt(
-                document.getElementById(
-                    "months"
-                ).value
-            );
-
-
-        /* -----------------------------------------
-           ตรวจสอบข้อมูล
-        ----------------------------------------- */
-
-        if (
-            isNaN(loanAmount) ||
-            loanAmount <= 0
-        ) {
-
-            showError(
-                "กรุณาระบุยอดเงินที่ต้องการกู้ให้ถูกต้อง"
-            );
-
-            return;
+            }).format(amount);
         }
 
-
-        if (
-            isNaN(annualRate) ||
-            annualRate < 0
-        ) {
-
-            showError(
-                "กรุณาระบุอัตราดอกเบี้ยต่อปีให้ถูกต้อง"
-            );
-
-            return;
+        /**
+         * แปลงสตริงตัวเลขที่มีคอมม่าให้กลับเป็น float
+         */
+        function parseFormattedNumber(value) {
+            if (!value) return 0;
+            return parseFloat(value.toString().replace(/,/g, '')) || 0;
         }
 
-
-        if (
-            isNaN(months) ||
-            months <= 0 ||
-            !Number.isInteger(months)
-        ) {
-
-            showError(
-                "กรุณาระบุจำนวนงวดเป็นจำนวนเดือนให้ถูกต้อง"
-            );
-
-            return;
-        }
-
-
-        /* -----------------------------------------
-           แปลงดอกเบี้ยต่อปีเป็นต่อเดือน
-
-           เช่น 6% ต่อปี
-           = 6 / 100 / 12
-           = 0.005 ต่อเดือน
-        ----------------------------------------- */
-
-        const monthlyRate =
-            annualRate / 100 / 12;
-
-
-        let monthlyPayment;
-
-
-        /* -----------------------------------------
-           กรณีดอกเบี้ย 0%
-
-           ค่างวด =
-           เงินต้น / จำนวนงวด
-        ----------------------------------------- */
-
-        if (monthlyRate === 0) {
-
-            monthlyPayment =
-                loanAmount / months;
-
-        }
-
-
-        /* -----------------------------------------
-           กรณีมีดอกเบี้ย
-
-           สูตร:
-
-           PMT =
-           P × r × (1+r)^n
-           -----------------
-             (1+r)^n - 1
-
-           P = เงินต้น
-           r = ดอกเบี้ยต่อเดือน
-           n = จำนวนงวด
-        ----------------------------------------- */
-
-        else {
-
-            const factor =
-                Math.pow(
-                    1 + monthlyRate,
-                    months
-                );
-
-
-            monthlyPayment =
-                loanAmount *
-                monthlyRate *
-                factor /
-                (factor - 1);
-
-        }
-
-
-        /* -----------------------------------------
-           ปัดค่างวดเป็น "จำนวนเต็มสิบบาท"
-
-           ตัวอย่าง:
-
-           2,341 → 2,340
-           2,346 → 2,350
-           2,350 → 2,350
-
-           ใช้การปัดตามหลักคณิตศาสตร์
-        ----------------------------------------- */
-
-        const roundedMonthlyPayment =
-            Math.round(
-                monthlyPayment / 10
-            ) * 10;
-
-
-        /* -----------------------------------------
-           ประมาณยอดชำระรวม
-        ----------------------------------------- */
-
-        const estimatedTotalPayment =
-            roundedMonthlyPayment * months;
-
-
-        /* -----------------------------------------
-           ประมาณดอกเบี้ยรวม
-
-           ยอดชำระรวม - เงินต้น
-        ----------------------------------------- */
-
-        const estimatedInterest =
-            Math.max(
-                0,
-                estimatedTotalPayment -
-                loanAmount
-            );
-
-
-        /* -----------------------------------------
-           แสดงผล
-        ----------------------------------------- */
-
-        document.getElementById(
-            "monthlyPayment"
-        ).textContent =
-            formatMoney(
-                roundedMonthlyPayment
-            ) + " บาท";
-
-
-        document.getElementById(
-            "resultPrincipal"
-        ).textContent =
-            formatMoney(
-                loanAmount
-            ) + " บาท";
-
-
-        document.getElementById(
-            "resultInterest"
-        ).textContent =
-            formatMoney(
-                estimatedInterest
-            ) + " บาท";
-
-
-        document.getElementById(
-            "resultTotal"
-        ).textContent =
-            formatMoney(
-                estimatedTotalPayment
-            ) + " บาท";
-
-
-        /* -----------------------------------------
-           แสดง Result
-        ----------------------------------------- */
-
-        document.getElementById(
-            "result"
-        ).classList.add("show");
-
-
-        /* -----------------------------------------
-           เลื่อนไปยังผลลัพธ์
-        ----------------------------------------- */
-
-        document.getElementById(
-            "result"
-        ).scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-
-    }
-
-
-    /* =========================================
-       ENTER = CALCULATE
-    ========================================= */
-
-    document.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (event.key === "Enter") {
-
-                calculateLoan();
-
+        /**
+         * จัดการการพิมพ์ในช่องยอดเงินกู้ให้มีเครื่องหมายคอมม่าสดขณะพิมพ์
+         */
+        function handleAmountInput(input) {
+            let cursorPosition = input.selectionStart;
+            let originalLength = input.value.length;
+            
+            let rawValue = input.value.replace(/[^0-9]/g, '');
+            if (rawValue === '') {
+                input.value = '';
+                return;
             }
 
+            let formattedValue = new Intl.NumberFormat('th-TH').format(parseInt(rawValue, 10));
+            input.value = formattedValue;
+
+            let newLength = formattedValue.length;
+            cursorPosition = cursorPosition + (newLength - originalLength);
+            input.setSelectionRange(cursorPosition, cursorPosition);
         }
-    );
 
-</script>
+        /* =========================================
+           2. VALIDATION SYSTEM
+        ========================================= */
 
+        function clearErrors() {
+            const errorEls = document.querySelectorAll('.error-message');
+            const inputEls = document.querySelectorAll('.input-wrapper input');
+            const alertBox = document.getElementById('algorithmAlert');
+            
+            errorEls.forEach(el => {
+                el.innerText = '';
+                el.style.display = 'none';
+            });
+            
+            inputEls.forEach(el => {
+                el.classList.remove('invalid');
+            });
+
+            if (alertBox) {
+                alertBox.style.display = 'none';
+                alertBox.innerText = '';
+            }
+        }
+
+        function showError(inputId, message) {
+            const inputEl = document.getElementById(inputId);
+            const errorEl = document.getElementById(inputId + 'Error');
+            
+            if (inputEl) inputEl.classList.add('invalid');
+            if (errorEl) {
+                errorEl.innerText = message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        function validateInput(loanAmount, interestRate, installmentMonths) {
+            let isValid = true;
+            clearErrors();
+
+            if (isNaN(loanAmount) || loanAmount <= 0) {
+                showError('loanAmount', 'กรุณาระบุยอดเงินกู้ที่มากกว่า 0 บาท');
+                isValid = false;
+            }
+
+            if (isNaN(interestRate) || interestRate < 0) {
+                showError('interestRate', 'กรุณาระบุอัตราดอกเบี้ยให้ถูกต้อง');
+                isValid = false;
+            }
+
+            if (isNaN(installmentMonths) || installmentMonths <= 0 || !Number.isInteger(installmentMonths)) {
+                showError('installmentMonths', 'กรุณาระบุจำนวนงวดที่มากกว่า 0 เดือน');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        /* =========================================
+           3. FINANCIAL CALCULATION CORE ALGORITHM
+        ========================================= */
+
+        /**
+         * สูตรค่างวดลดต้นลดดอกมาตรฐาน (Annuity Formula)
+         */
+        function calculateMonthlyPayment(principal, annualRate, months) {
+            if (annualRate === 0) {
+                return principal / months;
+            }
+            const monthlyRate = (annualRate / 100) / 12;
+            const factor = Math.pow(1 + monthlyRate, months);
+            return (principal * monthlyRate * factor) / (factor - 1);
+        }
+
+        /**
+         * จำลองการผ่อนชำระเพื่อสร้าง Amortization Schedule ตามค่างวดปกติ (basePayment)
+         */
+        function simulateSchedule(principal, annualRate, maxMonths, basePayment) {
+            const monthlyRate = (annualRate / 100) / 12;
+            let remainingBalance = principal;
+            let schedule = [];
+            let totalInterest = 0;
+
+            for (let currentMonth = 1; currentMonth <= maxMonths; currentMonth++) {
+                if (remainingBalance <= 0.00001) break;
+
+                let interestForMonth = remainingBalance * monthlyRate;
+                interestForMonth = Math.round(interestForMonth * 100) / 100; // ทศนิยม 2 ตำแหน่ง
+
+                let paymentForMonth = basePayment;
+                let principalForMonth = paymentForMonth - interestForMonth;
+
+                // ตรวจสอบว่างวดนี้ปิดบัญชีได้หรือไม่ หรือเป็นงวดสุดท้ายที่กำหนด
+                if (currentMonth === maxMonths || (remainingBalance + interestForMonth) <= paymentForMonth) {
+                    principalForMonth = remainingBalance;
+                    paymentForMonth = principalForMonth + interestForMonth;
+                    remainingBalance = 0;
+                } else {
+                    remainingBalance -= principalForMonth;
+                }
+
+                totalInterest += interestForMonth;
+
+                schedule.push({
+                    period: currentMonth,
+                    payment: paymentForMonth,
+                    principal: principalForMonth,
+                    interest: interestForMonth,
+                    balance: Math.max(0, remainingBalance)
+                });
+            }
+
+            return {
+                schedule: schedule,
+                totalInterest: totalInterest,
+                finalBalance: remainingBalance
+            };
+        }
+
+        /**
+         * ค้นหาค่างวดงวดปกติที่เป็น "จำนวนเต็มสิบบาท" ที่ทำให้:
+         * 1. จำนวนงวดจริง <= maxMonths
+         * 2. ชำระหนี้หมดพอดี (finalBalance = 0)
+         * 3. ยอดชำระงวดสุดท้าย < ยอดชำระงวดปกติ
+         */
+        function calculateLoan(principal, annualRate, maxMonths) {
+            const rawPayment = calculateMonthlyPayment(principal, annualRate, maxMonths);
+            
+            // เริ่มต้นทดสอบจากค่างวดหลักสิบที่ปัดขึ้น (เพื่อขยับให้งวดสุดท้ายต่ำลงเสมอ)
+            let baseTenPayment = Math.ceil(rawPayment / 10) * 10;
+            if (baseTenPayment === 0) baseTenPayment = 10;
+
+            let bestResult = null;
+
+            // วนลูปปรับเพิ่มค่างวดหลักสิบทีละ 10 บาท เพื่อหาสมดุลที่งวดสุดท้ายต่ำกว่างวดปกติ
+            for (let attempt = 0; attempt < 500; attempt++) {
+                let currentPayment = baseTenPayment + (attempt * 10);
+                
+                let sim = simulateSchedule(principal, annualRate, maxMonths, currentPayment);
+                let schedule = sim.schedule;
+                let actualMonths = schedule.length;
+                let lastRow = schedule[actualMonths - 1];
+
+                // เงื่อนไขสำหรับ 1 งวด: ยอดสุดท้ายคืองวดเดียว ปิดหนี้หมดพอดี
+                if (maxMonths === 1) {
+                    return {
+                        success: true,
+                        baseMonthlyPayment: lastRow.payment,
+                        totalInterest: sim.totalInterest,
+                        totalRepayment: principal + sim.totalInterest,
+                        actualMonths: 1,
+                        isFinalAdjusted: false,
+                        schedule: schedule
+                    };
+                }
+
+                // กรณีผ่อนมากกว่า 1 งวด: ตรวจสอบว่างวดสุดท้าย < งวดปกติ หรือไม่
+                if (actualMonths >= 1 && lastRow.payment < currentPayment - 0.01) {
+                    bestResult = {
+                        success: true,
+                        baseMonthlyPayment: currentPayment,
+                        totalInterest: sim.totalInterest,
+                        totalRepayment: principal + sim.totalInterest,
+                        actualMonths: actualMonths,
+                        isFinalAdjusted: true,
+                        schedule: schedule
+                    };
+                    break; // พบคำตอบที่สมบูรณ์ตรงตามเงื่อนไข
+                }
+            }
+
+            if (bestResult) {
+                return bestResult;
+            }
+
+            // กรณีไม่สามารถจัดให้งวดสุดท้ายต่ำกว่างวดปกติได้ (8.1)
+            return {
+                success: false,
+                message: "ไม่สามารถจัดงวดสุดท้ายให้มียอดชำระต่ำกว่างวดปกติได้ภายใต้จำนวนงวดที่กำหนด กรุณาเพิ่มจำนวนงวดหรือปรับข้อมูลการกู้"
+            };
+        }
+
+        /* =========================================
+           4. UI RENDER FUNCTIONS
+        ========================================= */
+
+        function generateAmortizationTable(schedule) {
+            const tbody = document.getElementById('amortizationTableBody');
+            tbody.innerHTML = '';
+
+            let sumPrincipal = 0;
+            let sumInterest = 0;
+            let sumPayment = 0;
+
+            schedule.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                const isLast = index === schedule.length - 1;
+
+                if (isLast) {
+                    tr.classList.add('final-row');
+                }
+
+                sumPrincipal += row.principal;
+                sumInterest += row.interest;
+                sumPayment += row.payment;
+
+                const periodText = isLast && schedule.length > 1 
+                    ? `${row.period} — งวดสุดท้าย` 
+                    : `${row.period}`;
+
+                tr.innerHTML = `
+                    <td>${periodText}</td>
+                    <td>${formatCurrency(row.payment)}</td>
+                    <td>${formatCurrency(row.principal)}</td>
+                    <td>${formatCurrency(row.interest)}</td>
+                    <td>${formatCurrency(row.balance)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // อัปเดต Total Summary ใต้ตาราง (12)
+            document.getElementById('tblTotalMonths').innerText = `${schedule.length} งวด`;
+            document.getElementById('tblTotalPrincipal').innerText = `${formatCurrency(sumPrincipal)} บาท`;
+            document.getElementById('tblTotalInterest').innerText = `${formatCurrency(sumInterest)} บาท`;
+            document.getElementById('tblTotalRepayment').innerText = `${formatCurrency(sumPayment)} บาท`;
+        }
+
+        function renderResults(loanAmount, interestRate, result) {
+            document.getElementById('displayMonthlyPayment').innerText = `${formatCurrency(result.baseMonthlyPayment)} บาท / เดือน`;
+            document.getElementById('summaryLoanAmount').innerText = `${formatCurrency(loanAmount)} บาท`;
+            document.getElementById('summaryInterestRate').innerText = `${interestRate.toFixed(2)}% ต่อปี`;
+            document.getElementById('summaryActualMonths').innerText = `${result.actualMonths} เดือน`;
+            document.getElementById('summaryTotalInterest').innerText = `${formatCurrency(result.totalInterest)} บาท`;
+            document.getElementById('summaryTotalRepayment').innerText = `${formatCurrency(result.totalRepayment)} บาท`;
+
+            const badgeContainer = document.getElementById('adjustmentBadgeContainer');
+            if (result.isFinalAdjusted) {
+                badgeContainer.innerHTML = `<span class="adjustment-badge">* งวดสุดท้ายมีการปรับยอดเพื่อปิดหนี้คงเหลือ</span>`;
+            } else {
+                badgeContainer.innerHTML = '';
+            }
+
+            generateAmortizationTable(result.schedule);
+
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.style.display = 'block';
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /* =========================================
+           5. EVENT HANDLERS
+        ========================================= */
+
+        function handleCalculate(event) {
+            event.preventDefault();
+
+            const loanAmount = parseFormattedNumber(document.getElementById('loanAmount').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const installmentMonths = parseInt(document.getElementById('installmentMonths').value, 10);
+
+            if (!validateInput(loanAmount, interestRate, installmentMonths)) {
+                return;
+            }
+
+            const calculationResult = calculateLoan(loanAmount, interestRate, installmentMonths);
+
+            if (!calculationResult.success) {
+                // แสดงข้อความเตือนตามเงื่อนไขข้อ 8.1 และไม่แสดงตาราง
+                document.getElementById('resultContainer').style.display = 'none';
+                const alertBox = document.getElementById('algorithmAlert');
+                alertBox.innerText = calculationResult.message;
+                alertBox.style.display = 'block';
+                alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            renderResults(loanAmount, interestRate, calculationResult);
+        }
+
+        function resetForm() {
+            document.getElementById('loanForm').reset();
+            clearErrors();
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.style.display = 'none';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
