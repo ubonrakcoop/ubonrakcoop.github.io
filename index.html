@@ -523,7 +523,8 @@
                                        id="loanAmount" 
                                        placeholder="เช่น 100,000" 
                                        inputmode="numeric"
-                                       oninput="handleAmountInput(this)">
+                                       oninput="handleAmountInput(this)"
+                                       onkeydown="handleEnterKey(event)">
                                 <span class="input-unit">บาท</span>
                             </div>
                             <span class="error-message" id="loanAmountError"></span>
@@ -537,7 +538,8 @@
                                        id="interestRate" 
                                        placeholder="เช่น 4.50" 
                                        step="0.01" 
-                                       min="0">
+                                       min="0"
+                                       onkeydown="handleEnterKey(event)">
                                 <span class="input-unit">% ต่อปี</span>
                             </div>
                             <span class="error-message" id="interestRateError"></span>
@@ -551,7 +553,8 @@
                                        id="installmentMonths" 
                                        placeholder="เช่น 12, 24, 36, 60" 
                                        step="1" 
-                                       min="1">
+                                       min="1"
+                                       onkeydown="handleEnterKey(event)">
                                 <span class="input-unit">เดือน</span>
                             </div>
                             <span class="error-message" id="installmentMonthsError"></span>
@@ -713,6 +716,25 @@
             let newLength = formattedValue.length;
             cursorPosition = cursorPosition + (newLength - originalLength);
             input.setSelectionRange(cursorPosition, cursorPosition);
+        }
+
+        /**
+         * กด Enter เพื่อเลื่อนไปช่องถัดไปตามลำดับบนลงล่าง ซ้ายไปขวา และคำนวณเมื่อถึงช่องสุดท้าย
+         */
+        function handleEnterKey(event) {
+            if (event.key !== 'Enter' || event.isComposing) return;
+            event.preventDefault();
+
+            const form = document.getElementById('loanForm');
+            const fields = Array.from(form.querySelectorAll('input'));
+            const next = fields[fields.indexOf(event.target) + 1];
+
+            if (next) {
+                next.focus();
+                next.select();
+            } else {
+                form.requestSubmit();
+            }
         }
 
         /* =========================================
